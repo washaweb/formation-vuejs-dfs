@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Computed properties</title>
+</head>
+<body>
+  <div id="app">
+    <h1>Utilisateur</h1>
+    <p>Prénom: {{user.firstname}}</p>
+    <p>Nom: {{user.lastname}}</p>
+    
+    {{ now }}
+    <br>
+    {{ dateAff }}
+    <br>
+    <button @click="getDate">Raffraichir la date</button>
+    <!-- ici on utilise une computed property pour afficher le nom complet -->
+    <p>Nom complet: {{ fullname }}</p>
+    <p>Nom remversé: {{ reverseFullname }}</p>
+  </div>
+
+  <!-- inclusion du script de vuejs -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

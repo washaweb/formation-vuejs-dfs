@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events en vuejs</title>
+  <style>
+    .variants {
+      display: flex;
+      max-width: 200px;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <h1>Les événements en VueJS</h1>
+
+  <p>Les événements permettent d'écouter les actions de l'utilisateur (par exemple click sur un bouton ou saisie d'un formulaire. Les événements déclenchent une action JavaScript qui peut soit se trouver directement dans le template, ou faire référence à une fonction qui se trouve dans les `methods` du controleur.</p>
+  
+  <div id="app">
+    <h2>Compteur: {{ count }}</h2>
+    <!-- v-on:click ou @click => ce sont des écouteurs d'événement -->
+    <button v-on:click="count++">Plus</button>
+    <button @click="onMinusCount">Moins</button>
+    <hr>
+
+    <!-- databinding bi-directionnel avec v-model, équivalent à :value et @input sur le même <input /> -->
+    <!-- Exemple complexe: <input type="text" :value="count" @input="count = $event.target.value"> -->
+    <!-- exemple avec v-model (plus facile) -->
+    <input type="number" min="0" v-model="count" @change="verifField()">
+
+    <hr>
+
+    <div class="product">
+      <div class="product-image">
+        <img :src="product.image" alt="placehoder image">
+      </div>
+      <div class="product-info">
+        <h1>{{ product.name }}</h1>
+        <p v-if="product.inventory > 10">En stock</p>
+        <p v-else-if="product.inventory < 10 && product.inventory > 0">Presque épuisé</p>
+        <p v-else>Pas en stock</p>
+        <ul>
+            <li v-for="detail in product.details">{{ detail }}</li>
+        </ul>
+        <section class="variants">
+          <!-- écouteur d'événement @mouseover => déclenche la fonction onUpdateVariant(image) -->
+        <div 
+          @mouseover="onUpdateVariant(variant.variantImage)"
+          @mouseleave="onUpdateVariant(imageTemp)"
+          v-for="variant in product.variants"
+          :key="variant.variantId">
+          <img width="80" :src="variant.variantImage" :alt="variant.variantColor"><br>
+          {{variant.variantColor }}
+        </div>
+      </section>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- inclusion du script de vuejs -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

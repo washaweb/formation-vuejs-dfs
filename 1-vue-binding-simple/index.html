@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue Js intégration</title>
+</head>
+<body>
+  <div id="toto">
+    <!-- data binding d'attribut simple (texte ou number) -->
+    <h1>{{ title }}</h1>
+    <p>{{ year }}</p>
+
+    <!-- directive v-if v-else-if v-else => tag conditionnel -->
+    <!-- v-bind: ou simplement : binding d'attribut html -->
+    <img
+      v-if="active"
+      v-bind:src="image"
+      v-bind:alt="title"
+      v-bind:title="title2">
+    <img
+      v-else
+      :src="image2"
+      :alt="title"
+      :title="title2">
+    
+
+
+    <div class="product">
+      <h2>{{ product.name }}</h2>
+      <img :src="product.image" alt="Image du produit">
+
+      <p>{{ product.rating }}</p>
+      
+      <p v-if="product.rating < 3">Note basse (-de 3)</p>
+      <p v-else-if="product.rating >= 3 && product.rating < 5">Note moyenne (3,4)</p>
+      <p v-else>Excellente note (5)</p>
+
+      <p v-show="product.rating < 3">Toto</p>
+      <p v-show="product.rating >= 3">Tata</p>
+
+      <p>Stock: {{ product.stock > 50 ? `en stock (${product.stock})` : 'bientôt en rupture' }}</p>
+      <ul>
+        <!-- directive v-for: avec obligatoirement key: permet de boucler sur des données tableau -->
+        <!-- on ne peut pas mettre de v-if avec un v-for -->
+        <li v-for="(item, index) in product.details" :key="index">{{ index + 1 }} - {{ item }}</li>
+        
+      </ul>
+    </div>
+
+
+  </div>
+
+  
+<!-- inclusion du script de vuejs -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
