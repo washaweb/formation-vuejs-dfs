@@ -8,6 +8,7 @@ En prérequis, vous devez avoir installé nodejs sur votre ordinateur (https://n
   #install la cli de vue de manière globale
   npm install -g @vue/cli
 
+  # on peut vérifier l'installation en testant le numéro de version
   vue -V
   #@vue/cli 4.4.1
 ```
