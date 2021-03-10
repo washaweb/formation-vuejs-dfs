@@ -21,6 +21,7 @@ const routes = [
   { 
     name: 'edition-facture',
     path: '/editbill/:id',
+    props: true,
     component: () => /* webpackChunkName: "editbill" */ import('../views/EditBill.vue')
   },
   { 
@@ -29,9 +30,10 @@ const routes = [
     component: () => /* webpackChunkName: "Clients" */ import ('../views/Clients.vue')
     
   },
-  { 
+  {
     name: 'edition-client',
     path: '/editclient/:id',
+    props: true,
     component: () => /* webpackChunkName: "EditClient" */ import ('@/views/EditClient.vue')
   },
   { 
@@ -43,6 +45,7 @@ const routes = [
 
 // on place nos routes dans une instance de VueRouter
 const router = new VueRouter({
+  mode: 'history',
   routes // short for `routes: routes`
 })
 

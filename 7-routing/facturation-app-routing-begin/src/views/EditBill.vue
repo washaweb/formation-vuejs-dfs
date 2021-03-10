@@ -3,7 +3,7 @@
   <b-container id="app">
     <b-row>
       <b-col>
-        <h3><i class="fas fa-angle-down text-muted mr-2" />Editer une facture {{ $route.params.id }}</h3>
+        <h3><i class="fas fa-angle-down text-muted mr-2" />Editer une facture {{ id }}</h3>
         <hr />
       </b-col>
     </b-row>
@@ -186,6 +186,12 @@ import { clientOptions } from '@/libs/clientOptions'
 // controleur du composant
 export default {
   name: 'EditBill',
+  props: {
+    id: {
+      type: Number,
+      required: true
+    }
+  },
   //data dans un composant Vue doit être une fonction qui retourne un objet
   data() {
     return {
