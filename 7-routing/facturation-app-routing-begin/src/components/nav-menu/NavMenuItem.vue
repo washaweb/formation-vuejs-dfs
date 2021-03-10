@@ -3,14 +3,9 @@
     <span class="fa-li">
       <i class="fas fa-angle-right"></i>
     </span>
-    <a
-      :class="{
-        'text-primary': link.active,
-        'text-secondary': !link.active
-      }"
-      :href="link.path">
+    <router-link :to="link.path" class="text-secondary">
       {{ link.name }}
-    </a>
+    </router-link>
   </li>
 </template>
 
@@ -25,3 +20,11 @@
     }
   }
 </script>
+
+<style scoped>
+
+.router-link-exact-active {
+  color: #007bff !important;
+}
+
+</style>

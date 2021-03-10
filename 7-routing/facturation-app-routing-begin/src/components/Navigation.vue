@@ -44,9 +44,10 @@
     data(){
       return {
         navItems: [
-          { name: 'Dashboard', active: true, path: '/' },
-          { name: 'Factures', active: false, path: '/bills' },
-          { name: 'Clients', active: false, path: '/clients' }
+          { name: 'Dashboard', path: '/' },
+          { name: 'Factures', path: '/bills' },
+          { name: 'Edit Facture 245', path: '/editbill/245' },
+          { name: 'Clients', path: '/clients' }
         ]
       }
     }

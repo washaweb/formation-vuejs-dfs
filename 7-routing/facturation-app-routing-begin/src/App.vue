@@ -1,7 +1,8 @@
 <template>
   <div>
     <Navigation />
-    <EditBill />
+    <!-- le composant du router qui permet d'afficher les vues du router -->
+    <router-view></router-view>
   </div>
 
 </template>
@@ -9,12 +10,10 @@
 
 <script>
 import Navigation from '@/components/Navigation.vue'
-import EditBill from '@/views/EditBill.vue'
 // controleur du composant
 export default {
   name: 'App',
   components: {
-    EditBill,
     Navigation
   }
 }
