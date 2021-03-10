@@ -1,6 +1,6 @@
 # Routes dynamiques & History Mode
 
-Cette leçon aborde la création d'itinéraires dynamiques et comment utiliser le mode Histoire HTML5 pour se débarrasser du sigle `#` dans l'URL. 
+Cette leçon aborde la création d'itinéraires dynamiques et comment utiliser le mode History HTML5 pour se débarrasser du sigle `#` dans l'URL.
 
 ## Créer une route dynamique
 
@@ -73,7 +73,7 @@ Utiliser `$route.params` dans votre composant limite sa flexibilité. Une façon
     });
 ```
 
-Le `$route.params` sera ainsi envoyé à votre composant comme une `prop` normale.
+Le `$route.params` sera ainsi envoyé à votre composant comme une `props` normale.
 À l'intérieur de notre composant, il faut adapter le code pour recevoir l'information :
 
 `User.vue`
@@ -92,11 +92,11 @@ Le `$route.params` sera ainsi envoyé à votre composant comme une `prop` normal
     </script>
 ```
 
-Tout va fonctionner de la même façon, mais notre composant pourra aussi être réutilisé en tant que composants normal dans un autre contexte, en passant le nom d'utilisateur comme une `prop` du composant.
+Tout va fonctionner de la même façon, mais notre composant pourra aussi être réutilisé en tant que composants normal dans un autre contexte, en passant le nom d'utilisateur comme une `props` du composant.
 
 ## Le Hash
 
-Vous avez sans doute remarqué qu'il y a un hachage dans notre URL `http://localhost:8080/#/about-us`, et vous demandez peut-être à quoi sert le « Mode hash » (qui est le mode par défaut pour le routeur Vue).
+Vous avez sans doute remarqué qu'il y a un hachage (`#`) dans notre URL `http://localhost:8080/#/about-us`, et vous demandez peut-être à quoi sert le « Mode hash » (qui est le mode par défaut pour le routeur Vue).
 Le hash d'URL permet de simuler une URL complète, pour que la page ne soit pas rechargé à chaque fois que l'URL change.
 
 Pour l'enlever, nous devons ajouter une configuration à notre `router.js`
@@ -149,12 +149,12 @@ Un effet secondaire de ce mode est que vous pourriez tomber sur une page non val
 
 ### Exercice
 
-Grâce à ces connaissances, vous allez mettre réaliser une nouvelle application :
+Grâce à ces connaissances, vous pouvez réaliser une application exercice :
 
 `EventList.vue` est un composant qui affiche une liste d'événements
-`EventShow.vue` a un segment dynamique `/event`, qui utilise les paramètres en `prop`
+`EventShow.vue` a un segment dynamique `/event`, qui utilise les paramètres en `props`
 
-`route.js` utilise le mode histoire:
+`route.js` utilise le mode history:
 
 ```js
     //...
