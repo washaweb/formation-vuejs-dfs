@@ -6,10 +6,11 @@ const state = {
   bills: [
     {
       id: 1,
+      billNumber: 1,
       date: '',
       description: '',
       client: {
-        idclient: 2,
+        idclient: 1,
         firstname: 'John',
         lastname: 'Doe'
       },
@@ -30,6 +31,7 @@ const state = {
     },
     {
       id: 2,
+      billNumber: 2,
       date: '',
       description: '',
       client: {
@@ -54,10 +56,11 @@ const state = {
     },
     {
       id: 3,
+      billNumber: 3,
       date: '',
       description: '',
       client: {
-        idclient: 2,
+        idclient: 3,
         firstname: 'Jim',
         lastname: 'Smith'
       },
@@ -83,13 +86,15 @@ const mutations = {
   // met à jour l'état de bill
   UPDATE_BILL(state, payload){
     state.bill = payload
-  }
+  },
+  UPDATE_BILLS(state, payload){
+    state.bills = payload
+  },
 }
 const actions = {
   
   //permet de récupérer les données d'une facture en fonction d'un id
   getBill({state, commit}, id) {
-
 
     //appel à la BDD (promise)
 
@@ -97,13 +102,15 @@ const actions = {
     // on cherche la facture dans la BDD (ici pour l'instant le state local)
     //_.cloneDeep => permet de faire une copie profonde de l'objet trouvé dans le tableau
     //pour ne pas faire référence à l'objet original du tableau, mais bien un nouvel objet en mémoire
-    const data = _.cloneDeep( state.bills.find(bill => bill.id === id) || {} )
+    const data = _.cloneDeep( state.bills.find(bill => bill.id == id) || {} )
+
+    // console.log(state.bills.find(bill => bill.id == id ))
     // on déclenche la mutation des données une fois le résultat récupéré
     commit('UPDATE_BILL', data)
   },
 
   //permet de récupérer les données d'une facture en fonction d'un id
-  saveBill({state}, payload) {
+  saveBill({state, commit}, payload) {
     
     //l'id de la bill qu'on veut enregistrer
     const id = payload.id
@@ -113,12 +120,27 @@ const actions = {
     // on doit enregistrer les données en BDD (ici pour l'instant le state local)
     for (let i = 0; i < state.bills.length; i++){
       const item = state.bills[i]
-      if (item.id === id) {
+      if (item.id == id) {
         state.bills[i] = _.cloneDeep( payload )
       }
     }
     // on déclenche la mutation des données une fois le résultat récupéré
-    // pas pour l'instant...
+    commit('UPDATE_BILLS', _.cloneDeep(state.bills) )
+  },
+
+
+  deleteBill({state, commit}, id){
+    //appel à la BDD (promise)
+
+    // en attendant on fait semblant d'avoir une BDD...
+    // on cherche la facture dans la BDD (ici pour l'instant le state local)
+    //_.cloneDeep => permet de faire une copie profonde de l'objet trouvé dans le tableau
+    //pour ne pas faire référence à l'objet original du tableau, mais bien un nouvel objet en mémoire
+    const data = _.cloneDeep( state.bills.filter(bill => bill.id != id) || {} )
+
+    console.log(data)
+    // on déclenche la mutation des données une fois le résultat récupéré
+    commit('UPDATE_BILLS', data)
   }
 }
 

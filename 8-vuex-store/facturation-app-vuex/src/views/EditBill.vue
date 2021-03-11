@@ -8,31 +8,31 @@
       </b-col>
     </b-row>
 
-    <b-card class="shadow p-3">
+    <b-card class="shadow p-3" v-if="form.id">
       <b-row>
         <b-col lg="4">
 
           <b-form-group
-            id="fieldset-idbill"
+            id="fieldset-billnumberform"
             label="Facture N°"
             label-cols-lg="4"
             content-cols-lg="8"
-            label-for="idbill"
+            label-for="billnumber"
           >
-            <b-form-input id="idbill" v-model="bill.id" />
+            <b-form-input id="billnumber" v-model="form.billNumber" />
           </b-form-group>
 
           <b-form-group
-            id="fieldset-billdate"
+            id="fieldset-formdate"
             label="Emise le:"
             label-cols-lg="4"
             content-cols-lg="8"
-            label-for="billdate"
+            label-for="formdate"
           >
             <b-form-datepicker 
               :date-format-options="{ year: 'numeric', month: 'numeric', day: 'numeric' }"
-              id="billdate"
-              v-model="bill.date" />
+              id="formdate"
+              v-model="form.date" />
           </b-form-group>
 
           <b-form-group
@@ -44,7 +44,7 @@
           >
             <b-form-select
               id="client"
-              v-model="bill.client"
+              v-model="form.client"
               :options="clients" />
           </b-form-group>
 
@@ -57,7 +57,7 @@
             label="Description:"
             label-for="description"
           >
-            <b-form-input id="description" v-model="bill.description"></b-form-input>
+            <b-form-input id="description" v-model="form.description"></b-form-input>
           </b-form-group>
 
           <b-form-group
@@ -67,26 +67,26 @@
             label="Description:"
             label-for="soumis-tva"
           >
-            <b-form-checkbox v-model="bill.tva" id="soumis-tva" switch>
+            <b-form-checkbox v-model="form.tva" id="soumis-tva" switch>
               Facture soumise à la TVA ?
             </b-form-checkbox>
           </b-form-group>
 
           <b-form-group
-            v-if="bill.tva"
+            v-if="form.tva"
             id="fieldset-tvarate"
             label-cols-md="3"
             content-cols-md="3"
             label="Taux de TVA:"
             label-for="tvarate"
           >
-            <b-form-select id="tvarate" v-model="bill.tvaRate" :options="rates"></b-form-select>
+            <b-form-select id="tvarate" v-model="form.tvaRate" :options="rates"></b-form-select>
           </b-form-group>
         </b-col>
       </b-row>
 
       <div class="mx-n2 mt-4">
-        <b-table stacked="lg" :fields="fields" :items="bill.prestations">
+        <b-table stacked="lg" :fields="fields" :items="form.prestations">
           
           <template #cell(actions)="row">
 
@@ -94,7 +94,7 @@
               <i class="fa-fw fas fa-plus-circle m-2 text-primary" />
             </b-button>
 
-            <b-button :disabled="bill.prestations.length < 2" variant="light" size="md" @click="onRemovePrestation(row.index)">
+            <b-button :disabled="form.prestations.length < 2" variant="light" size="md" @click="onRemovePrestation(row.index)">
               <i class="fa-fw fas fa-trash m-2 text-danger" />
             </b-button>
 
@@ -124,7 +124,7 @@
             label="Remises"
             label-for="discount"
           >
-            <b-form-input class="text-right" id="discount" type="number" v-model.number="bill.discount" placeholder="0"></b-form-input>
+            <b-form-input class="text-right" id="discount" type="number" v-model.number="form.discount" placeholder="0"></b-form-input>
           </b-form-group>
           
           <b-form-group
@@ -134,7 +134,7 @@
             label="Déjà payé"
             label-for="paid"
           >
-            <b-form-input class="text-right" type="number" id="paid" v-model.number="bill.paid" placeholder="0"></b-form-input>
+            <b-form-input class="text-right" type="number" id="paid" v-model.number="form.paid" placeholder="0"></b-form-input>
           </b-form-group>
 
           <b-form-group
@@ -168,12 +168,26 @@
           </b-form-group>
         </b-col>
       </b-row>
+      
+      <hr>
+
+      <b-row>
+        <b-col>
+          <b-button variant="danger" @click="onDeleteBill()">Supprimer</b-button>
+        </b-col>
+        <b-col class="text-right">
+          <b-button variant="primary" @click="onSaveBill()">Enregister</b-button>
+        </b-col>
+      </b-row>
 
     </b-card>
 
     <b-form-checkbox class="my-4" v-model="debug" name="debug" switch>Debug</b-form-checkbox>
 
-    <pre v-if="debug" class="debug card border-primary bg-dark text-light p-4">{{ bill }}</pre>
+    <pre v-if="debug && form.id" class="debug card border-primary bg-dark text-light p-4">
+      Form: {{ form }}
+      Bill (du store): {{ bill }}
+      </pre>
 
   </b-container>
 
@@ -181,6 +195,9 @@
 
 
 <script>
+import _ from 'lodash'
+import { mapState, mapActions } from 'vuex'
+
 import { clientOptions } from '@/libs/clientOptions'
 
 // controleur du composant
@@ -188,7 +205,7 @@ export default {
   name: 'EditBill',
   props: {
     id: {
-      type: Number,
+      type: String,
       required: true
     }
   },
@@ -234,70 +251,84 @@ export default {
           sortable: false
         }
       ],
-      bill: {
-        id: 1,
-        date: '',
-        description: '',
-        client: {
-          idclient: 2,
-          firstname: 'Maria',
-          lastname: 'Doe'
-        },
-        prestations: [{
-          description: 'Test description',
-          qty: 1,
-          price: 450.00
-        },
-        {
-          description: 'TOTO',
-          qty: 2,
-          price: 950.00
-        }],
-        discount: 0.00,
-        paid: 0.00,
-        tva: true,
-        tvaRate: 20
-      }
+      form: {}
     }
   },
   computed: {
+    ...mapState({
+      bill: state => state.bill.bill
+    }),
     totalHT(){
       let total = 0
 
-      if(this.bill.prestations.length > 0){
-        for (const prestation of this.bill.prestations) {
+      if(this.form.prestations.length > 0){
+        for (const prestation of this.form.prestations) {
           if(prestation.qty > 0) {
             let calc = prestation.qty * prestation.price
             total += calc
           }
         }
       }
-      total -= this.bill.discount
-      total -= this.bill.paid
+      total -= this.form.discount
+      total -= this.form.paid
 
       return total
     },
     totalTVA() {
-      return this.bill.tva ? (this.totalHT * this.bill.tvaRate) / 100 : 0
+      return this.form.tva ? (this.totalHT * this.form.tvaRate) / 100 : 0
     },
     totalTTC(){
       return this.totalHT + this.totalTVA
     }
   },
   methods: {
+    // mapActions permet d'accéder directement aux actions du store depluis un composant
+    //map this.getBill(data) avec this.$store.dispatch('bill/getBill', data)
+    ...mapActions('bill', ['getBill', 'saveBill', 'deleteBill']),
+    
     onAddPrestation() {
       console.log('ajout d’une ligne')
-      this.bill.prestations.push({
+      this.form.prestations.push({
         description: '',
         qty: 1,
         price: 450.00
       })
     },
+
     onRemovePrestation(index) {
       console.log('suppression d’une ligne' + index)
-      this.bill.prestations.splice(index, 1)
+      this.form.prestations.splice(index, 1)
+    },
+
+    onDeleteBill(){
+
+      // on appelle la méthode du store (grâce à mapActions)
+      //on pourrait également appeler this.$store.dispatch('bill/deleteBill', this.form.id)
+      this.deleteBill(this.form.id)
+      
+      //une fois la donnée enregistrée dans le store 
+      //je redirige l'utilisateur vers la liste avec le router
+      this.$router.push({ name: 'factures' })
+    },
+
+    onSaveBill(){
+      
+      // on appelle la méthode du store (grâce à mapActions)
+      //on pourrait également appeler this.$store.dispatch('bill/saveBill', this.form)
+      this.saveBill( this.form )
+
+      //une fois la donnée enregistrée dans le store 
+      //je redirige l'utilisateur vers la liste avec le router
+      this.$router.push({ name: 'factures' })
     }
   },
-  
+  created() {
+    //se déclenche à l'instantiation du composant
+    //en fait dès qu'on arrive sur la route editbill
+
+    this.getBill(this.id)
+    this.form = _.cloneDeep(this.bill)
+
+  }
 }
 </script>

@@ -14,5 +14,13 @@ export const clientOptions = [
       firstname: 'Maria',
       lastname: 'Doe'
     }
+  },
+  {
+    text: 'Jim Smith',
+    value: {
+      idclient: 3,
+      firstname: 'Jim',
+      lastname: 'Smith'
+    }
   }
 ]

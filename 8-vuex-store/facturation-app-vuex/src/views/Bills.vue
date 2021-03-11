@@ -69,7 +69,7 @@ import { mapState } from 'vuex'
         currentPage: 1,
         fields: [
           {
-            key: 'id',
+            key: 'billNumber',
             label: 'N°',
             class: 'cell-idbill',
             sortable: true
