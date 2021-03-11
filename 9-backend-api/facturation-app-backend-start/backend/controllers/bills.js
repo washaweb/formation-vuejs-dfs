@@ -42,7 +42,8 @@ exports.postItem = (req, res) => {
   bill.save().then(() => {
 
     // retourne la réponse au format JSON
-    res.status(200).json({
+    //le status code 201 indique que la ressource a bien été créée
+    res.status(201).json({
       message: 'Facture crée !'
     })
   // en cas d'erreur à l'enregistrement en BDD...
@@ -56,7 +57,8 @@ exports.putItem = (req, res) => {
   Bill.updateOne({ _id: req.params.id },{ ...req.body })
   .then(() => {
     // retourne la réponse au format JSON
-    res.status(200).json({
+    //le status code 201 indique que la ressource a bien été créée
+    res.status(201).json({
       message: 'Facture mise à jour !'
     })
   // en cas d'erreur à l'enregistrement en BDD...
@@ -70,7 +72,7 @@ exports.deleteItem = (req, res) => {
     _id: req.params.id
   }).then((bill) => {
     // si la facture est trouvée, on la supprime, puis renvoie un message de confirmation
-    res.status(200).json({
+    res.status(201).json({
       message: 'Facture supprimée'
     })
     // en cas d'erreur on capture le message d'erreur pour l'aficher dans la réponse en JSON

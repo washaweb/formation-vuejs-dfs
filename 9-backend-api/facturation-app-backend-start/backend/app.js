@@ -1,9 +1,15 @@
+require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb+srv://washaweb:Ej.wQBrVU9fVWw@promotheuscluster.lpqrf.mongodb.net/ifa-bills-app?retryWrites=true&w=majority',
+const user = process.env.MONGO_USER
+const pass = process.env.MONGO_PASS
+const cluster = process.env.MONGO_CLUSTER
+const db = process.env.MONGO_DB
+
+mongoose.connect(`mongodb+srv://${user}:${pass}@${cluster}/${db}?retryWrites=true&w=majority`,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
