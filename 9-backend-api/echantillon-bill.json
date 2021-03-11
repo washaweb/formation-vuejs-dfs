@@ -1,0 +1,24 @@
+{
+  "billNumber": 1,
+  "date": "2021-03-11T15:35:00.000Z",
+  "description": "",
+  "client": {
+    "idclient": 1,
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "prestations": [{
+    "description": "Test description",
+    "qty": 2,
+    "price": 450.00
+  },
+  {
+    "description": "TOTO",
+    "qty": 2,
+    "price": 950.00
+  }],
+  "discount": 0.00,
+  "paid": 0.00,
+  "tva": true,
+  "tvaRate": 20
+}
