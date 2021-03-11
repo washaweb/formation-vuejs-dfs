@@ -15,5 +15,8 @@ router.get('/', ctrl.getList )
 //le router executera la requête dans l'ordre des middlewares,
 //pour finir avec le contrôleur de la requête
 router.get('/:id', verifyParams, ctrl.getItem)
+router.post('/', ctrl.postItem)
+router.put('/:id', verifyParams, ctrl.putItem)
+router.delete('/:id', verifyParams, ctrl.deleteItem)
 
 module.exports = router
